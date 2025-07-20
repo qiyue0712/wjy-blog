@@ -51,10 +51,23 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             WebUtils.renderString(response, JSON.toJSONString(result));
             return;
         }
-        String userId = claims.getSubject();
+        String userid = claims.getSubject();
 
         // 从 redis 获取用户信息
-        LoginUser loginUser = redisCache.getCacheObject("bloglogin: " + userId);
+        Object userObj = redisCache.getCacheObject("bloglogin:" + userid);
+
+        LoginUser loginUser = null;
+        if (userObj != null) {
+            // 处理不同类型的返回值
+            if (userObj instanceof LoginUser) {
+                loginUser = (LoginUser) userObj;
+            } else {
+                // 将其他类型转换为 JSON 字符串，再解析为 LoginUser
+                String json = JSON.toJSONString(userObj);
+                loginUser = JSON.parseObject(json, LoginUser.class);
+            }
+        }
+
         // 如果获取不到
         if (Objects.isNull(loginUser)) {
             // 说明登录过期 提示重新登录

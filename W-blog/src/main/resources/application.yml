@@ -9,6 +9,7 @@ spring:
     password: gK3T9n%q2M@j7Z4
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+
   servlet:
     # 文件上传
     multipart:

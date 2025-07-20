@@ -29,4 +29,7 @@ public class SystemConstants {
      */
     public static final int ARTICLE_STATUS_SIZE = 10;
 
+    public static final String ARTICLE_COMMENT = "0";
+
+    public static final String LINK_COMMENT = "1";
 }
